@@ -90,19 +90,21 @@ if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--nb_epochs', type=int, default=2,
+    parser.add_argument('--epochs', type=int, default=2,
                         help='number of epochs to train')
     parser.add_argument('--learning_rate', type=float,
                         default=1e-3, help='learning rate')
     parser.add_argument('--dropout', type=float,
                         default=.2, help='drop out')
+    parser.add_argument('--layers', type=int,
+                        default=1, help='number of layers')
     parser.add_argument('--data_path', type=str, 
                         help='path to training-set file')
     parser.add_argument('--output_dir', type=str, 
                         help='output directory')
     
     args = parser.parse_args()
-    nb_epochs = args.nb_epochs
+    nb_epochs = args.epochs
     learning_rate = args.learning_rate
     dropout = args.dropout
     data_path = args.data_path
