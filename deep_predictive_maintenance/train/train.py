@@ -20,9 +20,7 @@ def train( dataloader, learning_rate,
           dropout, nb_classes,
          X_val,y_val):
     
-    print("Start training")
-    run.log('learning rate', learning_rate)
-    run.log('dropout', dropout)
+    
     
     network = Network(device, input_size,
                       hidden_size, nb_layers, dropout, 
@@ -98,6 +96,10 @@ if __name__ == '__main__':
                         default=.2, help='drop out')
     parser.add_argument('--layers', type=int,
                         default=1, help='number of layers')
+    parser.add_argument('--hidden_units', type=int,
+                        default=16, help='number of neurons')
+    parser.add_argument('--batch_size', type=int,
+                        default=16, help='Mini batch size')
     parser.add_argument('--data_path', type=str, 
                         help='path to training-set file')
     parser.add_argument('--output_dir', type=str, 
@@ -110,12 +112,18 @@ if __name__ == '__main__':
     data_path = args.data_path
     output_dir = args.output_dir
     nb_layers = args.layers
+    batch_size = args.batch_size
     
-    hidden_size = 128
+    hidden_size = args.hidden_units
     nb_classes = 2
-    batch_size = 32
+    batch_size = args.batch_size
     
+    print("Start training")
     
+    run.log('learning rate', learning_rate)
+    run.log('dropout', dropout)
+    run.log('batch_size', batch_size)
+    run.log('hidden_units', hidden_size)
     
     os.makedirs(data_path, exist_ok = True)
     training_file = os.path.join(data_path, 'preprocessed_train_file.csv')
@@ -129,7 +137,7 @@ if __name__ == '__main__':
     X_val,y_val = to_tensors(val_file_path, istest = True)
     
     dataset = utils.TensorDataset(X_train,y_train) 
-    dataloader = utils.DataLoader(dataset)
+    dataloader = utils.DataLoader(dataset, batch_size = batch_size)
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
