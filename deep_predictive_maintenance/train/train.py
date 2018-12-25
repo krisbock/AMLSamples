@@ -8,22 +8,22 @@ import numpy as np
 import pandas as pd
 from utils import tensorize,to_tensors
 from network import Network
-from sklearn.metrics import (recall_score, 
-                             precision_score, 
-                             accuracy_score)
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import precision_score,recall_score,f1_score
 
 run = Run.get_context()
 
-def train( dataloader, learning_rate,
-          device,input_size, 
-          hidden_size, nb_layers,
-          dropout, nb_classes,
-         X_val,y_val):
+def train( dataloader, learning_rate,batch_size,
+          input_size,hidden_size, 
+          nb_layers,dropout,
+          val_dataloader):
     
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    nb_classes=2
     
-    
-    network = Network(device, input_size,
-                      hidden_size, nb_layers, dropout, 
+    network = Network(device,batch_size, 
+                      input_size,hidden_size,
+                      nb_layers,dropout,
                       nb_classes).to(device)
     
     # Loss and optimizer
@@ -34,53 +34,68 @@ def train( dataloader, learning_rate,
     
     # Train the model
     for epoch in range(nb_epochs):
+        
+        
         for i, (X, y) in enumerate(dataloader):
             X = X.reshape(-1, X.shape[1], input_size).to(device)
             y = y.to(device)
-
+            
+            optimizer.zero_grad()
+            network.hidden_0 = network.init_hidden(batch_size = X.shape[0],
+                                                   denominator = 1)
+            network.hidden_1 = network.init_hidden(batch_size = X.shape[0],
+                                                   denominator = 2)
+            
             # Forward pass
             y_pred = network(X)
             loss = criterion(y_pred, y)
 
             # Backprop
-            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
             if (i+1) % 100 == 0:
-                '''print('epoch [{}/{}], loss: {:.4f}'
-                                   .format(epoch+1,nb_epochs, loss.item()))'''
                 run.log('loss', loss.item())
                 
-        evaluate(X_val,y_val, network, device)
+        # end of epoch       
+        evaluate(val_dataloader, network, device)
+        network.train()
 
     return network
 
-def evaluate(X_test,y_test , network, device):
+def evaluate(dataloader, network, device):
     
     '''
-        Evaluate model on testing set
+        Evaluate model on validation set
         
         params:
-            testfile_path: path to testing file
+            X_test: validation dataset
+            y_test: validation target
+            network: pytorch model
+            device: torch device 
     '''
+    with torch.no_grad(): 
+         for i, (X, y) in enumerate(dataloader):
+                network.hidden_0 = network.init_hidden(batch_size = X.shape[0],
+                                                   denominator = 1)
+                network.hidden_1 = network.init_hidden(batch_size = X.shape[0],
+                                                       denominator = 2)
+                
+                X = X.reshape(-1, X.shape[1], X.shape[2]).to(device)
+                y_pred = network(X)
+                
+                y_pred_np = y_pred.to('cpu').data.numpy()
+                y_test_np = y.to('cpu').data.numpy()
+                y_pred_np = np.argmax(y_pred_np, axis=1)
 
-    X_test = torch.from_numpy(X_test).to(device)
-    y_test = torch.from_numpy(y_test).to(device)
+                precision = precision_score(y_test_np, y_pred_np)
+                recall = recall_score(y_test_np, y_pred_np)
+                f1 = f1_score(y_test_np, y_pred_np)
 
-    y_pred = network(X_test)
-    
-    y_pred_np = y_pred.to('cpu').data.numpy()
-    y_test_np = y_test.to('cpu').data.numpy()
-    y_pred_np = np.argmax(y_pred_np, axis=1)
-    
-    accuracy = accuracy_score(y_test_np, y_pred_np)
-    precision = precision_score(y_test_np, y_pred_np)
-    recall = recall_score(y_test_np, y_pred_np)
-    
-    run.log('accuracy', accuracy)
-    run.log('precision', precision)
-    run.log('recall', recall)
+                run.log('precision', round(precision,2))
+                run.log('recall', round(recall,2))
+                run.log('f1', round(f1,2))
+
 
 if __name__ == '__main__':
     
@@ -115,43 +130,49 @@ if __name__ == '__main__':
     batch_size = args.batch_size
     
     hidden_size = args.hidden_units
-    nb_classes = 2
     batch_size = args.batch_size
     
     print("Start training")
     
-    run.log('learning rate', learning_rate)
-    run.log('dropout', dropout)
-    run.log('batch_size', batch_size)
-    run.log('hidden_units', hidden_size)
+    print('learning rate', learning_rate)
+    print('dropout', dropout)
+    print('batch_size', batch_size)
+    print('hidden_units', hidden_size)
     
     os.makedirs(data_path, exist_ok = True)
     training_file = os.path.join(data_path, 'preprocessed_train_file.csv')
     
-    X_train, y_train = to_tensors(training_file)
+    X, y = to_tensors(training_file)
+    X_train, X_test, y_train, y_test = train_test_split(
+                             X, y, test_size=0.15, random_state=122)
     input_size = X_train.shape[2]
-    X_train = torch.from_numpy(X_train)
-    y_train = torch.from_numpy(y_train)
+
     
-    val_file_path = os.path.join(data_path, 'preprocessed_test_file.csv')
-    X_val,y_val = to_tensors(val_file_path, istest = True)
     
-    dataset = utils.TensorDataset(X_train,y_train) 
-    dataloader = utils.DataLoader(dataset, batch_size = batch_size)
+    dataset = utils.TensorDataset(torch.from_numpy(X_train),
+                                  torch.from_numpy(y_train)) 
+    dataloader = utils.DataLoader(dataset, batch_size = batch_size,
+                                  shuffle = True)
     
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    
+    
+
+    val_dataset = utils.TensorDataset(torch.from_numpy(X_test),
+                                      torch.from_numpy(y_test))
+    val_dataloader = utils.DataLoader(val_dataset, batch_size = batch_size,
+                                      shuffle = True)
     
     
     network = train(dataloader,learning_rate,
-                    device, input_size,
-                    hidden_size, nb_layers,
-                    dropout, nb_classes,
-                    X_val,y_val)
+                    batch_size,input_size,hidden_size, 
+                    nb_layers,dropout,
+                    val_dataloader)
     
     
-    evaluate(X_val,y_val, network, device)
+    #evaluate(X_test,y_test, network, device)
     
     os.makedirs(output_dir, exist_ok = True)
     model_path = os.path.join(output_dir, 'network.pth')
+    
     torch.save(network, model_path)
-    run.register_model(model_name = 'network.pth', model_path = model_path)
+    run.register_model(model_name = 'network.pt', model_path = model_path)
