@@ -74,10 +74,13 @@ def tensorize_test_set(test_df, input_features,timestep):
             engine_ids.append(id)
 
     X = np.asarray(seq_array_test_last).astype(np.float32)
-    y_mask = [len(test_df[test_df['engine_id']==id]) >= timestep for id in test_df['engine_id'].unique()]
-    y = test_df.groupby('engine_id')['label1'].nth(-1)[y_mask].values
-    y = y.reshape(-1)
     
+    
+    y_mask = [len(test_df[test_df['engine_id']==id]) >= timestep for id in test_df['engine_id'].unique()]
+
+    y = test_df.groupby('engine_id')['label1'].nth(-1)[y_mask].values
+    
+    y = y.reshape(-1)
     return X,y,engine_ids
 
 

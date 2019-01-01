@@ -11,13 +11,12 @@ class Network(nn.Module):
         
         self.hidden_size = hidden_size
         self.nb_layers = nb_layers
-        self.dropout = nn.Dropout(dropout)
         self.rnn = nn.LSTM(input_size, hidden_size, 
                            nb_layers, batch_first=True,
                            dropout = dropout)
         self.fc = nn.Linear(hidden_size, 2)
         self.activation = nn.ReLU()
-        return (h,c)
+        
     
     def forward(self, sequence):
         

@@ -4,13 +4,17 @@ import os
 import numpy as np
 import pandas as pd
 
-from utils import tensorize,to_tensors
+import torch
+
+from utils import to_tensors
+from train import train
+
 from sklearn.model_selection import train_test_split
 from azureml.core import Run
 
 if __name__ == '__main__':
     
-    print('Pytorch version', torch.__version__)
+    
     
     parser = argparse.ArgumentParser()
     
@@ -18,10 +22,10 @@ if __name__ == '__main__':
                         help='number of epochs to train')
     parser.add_argument('--learning_rate', type=float,
                         default=1e-3, help='learning rate')
+    parser.add_argument('--l2', type=float, 
+                        help='Weight decay')
     parser.add_argument('--dropout', type=float,
                         default=.2, help='drop out')
-    parser.add_argument('--layers', type=int,
-                        default=1, help='number of layers')
     parser.add_argument('--hidden_units', type=int,
                         default=16, help='number of neurons')
     parser.add_argument('--batch_size', type=int,
@@ -34,12 +38,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
     nb_epochs = args.epochs
     learning_rate = args.learning_rate
+    weight_decay = args.l2
     dropout = args.dropout
     data_path = args.data_path
     output_dir = args.output_dir
-    nb_layers = args.layers
     batch_size = args.batch_size
-    
     hidden_size = args.hidden_units
     batch_size = args.batch_size
     
@@ -47,12 +50,8 @@ if __name__ == '__main__':
     torch.manual_seed(SEED)
     np.random.seed(SEED)
     
-    print("Start training")
     
-    print('learning rate', learning_rate)
-    print('dropout', dropout)
-    print('batch_size', batch_size)
-    print('hidden_units', hidden_size)
+    print('Pytorch version', torch.__version__)
     
     run = Run.get_context()
     
@@ -66,10 +65,10 @@ if __name__ == '__main__':
 
     
     network = train( X_train,y_train, 
-                    X_test,y_test, 
+                    X_test,y_test, weight_decay,
                     learning_rate,batch_size,
-                    hidden_size,nb_layers,
-                    dropout, run)
+                    hidden_size,dropout,
+                    nb_epochs, run)
     
     os.makedirs(output_dir, exist_ok = True)
     model_path = os.path.join(output_dir, 'network.pth')
