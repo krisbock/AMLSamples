@@ -16,6 +16,7 @@ class Network(nn.Module):
                            dropout = dropout)
         self.fc = nn.Linear(hidden_size, 2)
         self.activation = nn.ReLU()
+        self.softmax = nn.LogSoftmax()
         
     
     def forward(self, sequence):
@@ -23,4 +24,5 @@ class Network(nn.Module):
         out,_ = self.rnn(sequence)
         out = self.activation(out)
         out = self.fc(out[:, -1, :])
-        return out
+        likelihood = self.softmax(out)
+        return out, likelihood

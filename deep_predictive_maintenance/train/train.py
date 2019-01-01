@@ -50,11 +50,10 @@ def train(X_train,y_train,
     for epoch in range(nb_epochs):
         for i, (X, y) in enumerate(dataloader):
             optimizer.zero_grad()
-            y_pred = network(X.to(use_gpu))
+            y_pred, _ = network(X.to(use_gpu))
             loss = cost_fn(y_pred, y.to(use_gpu))
             loss.backward()
             optimizer.step()
-
             if (i+1) % 100 == 0:
                 run.log('loss', loss.item())
                 
@@ -84,7 +83,7 @@ def evaluate(dataloader, network, use_gpu, run):
         for i, (X, y) in enumerate(dataloader):
             
                 #X = X.to(use_gpu)
-                output = network(X.to(use_gpu))
+                output, _ = network(X.to(use_gpu))
                 y_pred = output.to('cpu').data.numpy().argmax(axis=1)
                 
                 y_pred_lst.append(y_pred)
