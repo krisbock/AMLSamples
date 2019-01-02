@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.utils.data as utils
 
 from network import Network
-from sklearn.metrics import precision_score,recall_score,f1_score
+from sklearn.metrics import (precision_score,recall_score,f1_score)
 
 
 
@@ -15,6 +15,23 @@ def train(X_train,y_train,
           learning_rate,batch_size,
           hidden_size,dropout,
           nb_epochs, run):
+
+    '''
+        Train lstm network 
+        
+        params:
+            X_train: training set
+            y_train: training label
+            X_test: validation set
+            y_test: validation label
+            weight_decay: l2 reguralization
+            learning_rate: optimizer learning rate
+            batch_size: mini batches size
+            hidden_size: number of hidden units
+            dropout: Dropout
+            nb_epochs: number of epocs to train
+            run: AML RUN
+    '''
     
     print("Start training....")
     print('learning rate', learning_rate)
