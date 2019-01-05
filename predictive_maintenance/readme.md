@@ -10,14 +10,14 @@ This sample is an implementation of the predictive maintenance real-world scenar
   
   - Training and operationalization using Azure Machine Learning Service.
   - Model training on Azure Databricks cluster (gain of 1 order of magnitude in speed).
-  - Prediction Serving using Azure container instance.
+  - Prediction serving using Azure container instance.
   - Minor Changes include: 
         
     *  Replacement of pandas dataframe manipulation to spark RDD.
     *  Addition of a features importance plot.
     *  Slight modification to existing EDA plots.
 
-## Prerequisite:
+## Prerequisites:
 
 Before running this notebook, make sure you have gone through the steps listed below:
 
