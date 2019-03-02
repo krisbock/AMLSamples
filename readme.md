@@ -6,8 +6,8 @@ This repository provide samples on how to use Azure Machine learning services py
 
 ## Table of Samples
 
-* **[facereco](https://github.com/Azure/AMLSamples/tree/master/facereco)** sample demonstrates how to train an [Azure Machine learning pipeline](https://review.docs.microsoft.com/en-us/azure/machine-learning/service/concept-ml-pipelines?branch=master) using [Batch AI](https://azure.microsoft.com/en-us/services/batch-ai/).
 
+* **[facereco](https://github.com/Azure/AMLSamples/tree/master/facereco)** sample demonstrates how to train an [Azure Machine learning pipeline](https://review.docs.microsoft.com/en-us/azure/machine-learning/service/concept-ml-pipelines?branch=master).
 * **[Predictive maintenance](https://github.com/Azure/AMLSamples/tree/master/predictive_maintenance)** real world scenario template previously available under AML Workbench trained on Azure Databricks.
 * **[Deep Predictive maintenance](https://github.com/Azure/AMLSamples/tree/master/deep_predictive_maintenance)** real world scenario template previously available under AML Workbench trained using Pytorch.
 
