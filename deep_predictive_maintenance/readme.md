@@ -17,9 +17,9 @@ This sample is an implementation of the predictive maintenance real-world scenar
 
 Before running this notebook, make sure you have gone through the steps listed below:
 
-- You have a workspace created https://docs.microsoft.com/en-us/azure/machine-learning/service/quickstart-get-started 
+- You have a workspace created listed [here](https://docs.microsoft.com/en-us/azure/machine-learning/service/quickstart-get-started )  
 
-- You have a development environment configured https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-configure-environment
+- You have a development environment configured as described [here](https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-configure-environment#azure-databricks)
 
 
 
