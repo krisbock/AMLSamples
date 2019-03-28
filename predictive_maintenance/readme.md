@@ -2,7 +2,6 @@
 
 This sample is an implementation of the predictive maintenance real-world scenario template previously available in Azure Machine learning workbench using Azure Machine learning SDK.
 
-- https://docs.microsoft.com/azure/machine-learning/preview/scenario-predictive-maintenance
 
 - https://github.com/Azure/MachineLearningSamples-PredictiveMaintenance
 
