@@ -16,16 +16,19 @@ Binary classifier with implementation of Stochastic-variational deep kernel lear
 """
 
 
-class NeuralnetLayer(torch.nn.Sequential):
+class NeuralNetLayer(torch.nn.Sequential):
     """Fully connected network: features extractor layer"""
-    def __init__(self,data_dim, output_dim):
+    def __init__(self,
+                data_dim,
+                output_dim):
         
+
         """Full connected network
 
          input->200->100->50->2
 
         """
-        super(NeuralnetLayer, self).__init__()
+        super(NeuralNetLayer, self).__init__()
        
         self.add_module('linear1', torch.nn.Linear(data_dim, 200))
         self.add_module('bn1', torch.nn.BatchNorm1d(200))
@@ -41,11 +44,12 @@ class NeuralnetLayer(torch.nn.Sequential):
 # GP layer
 class GaussianProcessLayer(AbstractVariationalGP):
     """Gaussian Process layer using additive covariance kernel sturcture"""
-    def __init__(self, 
-                num_dim, 
-                grid_bounds, 
-                grid_size,
-                num_mixtures):
+    def __init__(
+        self, 
+        num_dim, 
+        grid_bounds, 
+        grid_size,
+        num_mixtures):
 
         """Initialize Gaussian process layer
 
@@ -84,7 +88,11 @@ class GaussianProcessLayer(AbstractVariationalGP):
         self.grid_bounds = grid_bounds
         
 
-    def forward(self, x):
+    def forward(
+        self,
+        x
+        ):
+
 
         """Forward pass"""
 
@@ -101,12 +109,14 @@ class GaussianProcessLayer(AbstractVariationalGP):
 
 # SV-DKL model
 class DKLModel(gpytorch.Module):
-    def __init__(self, 
-                nnet_layer,
-                num_dim, 
-                grid_bounds,
-                grid_size)
-                num_mixture:
+    def __init__(
+        self, 
+        nnet_layer,
+        num_dim, 
+        grid_bounds,
+        grid_size,
+        num_mixtures):
+
 
         """ISV-DKL model
 
@@ -129,7 +139,7 @@ class DKLModel(gpytorch.Module):
                                              )
         self.grid_bounds = grid_bounds
 
-    def forward(self, x):
+    def forward(self,x):
 
         """Forward pass"""
 
@@ -139,7 +149,11 @@ class DKLModel(gpytorch.Module):
         """
 
         features = self.nnet_layer(x)
-        features = gpytorch.utils.grid.scale_to_bounds(features, self.grid_bounds[0], self.grid_bounds[1])
+        features = gpytorch.utils.grid.scale_to_bounds(
+            features, self.grid_bounds[0], 
+            self.grid_bounds[1]
+            )
+            
         res = self.gp_layer(features)
 
 
