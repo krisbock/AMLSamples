@@ -18,9 +18,7 @@ Binary classifier with implementation of Stochastic-variational deep kernel lear
 
 class NeuralNetLayer(torch.nn.Sequential):
     """Fully connected network: features extractor layer"""
-    def __init__(self,
-                data_dim,
-                output_dim):
+    def __init__(self, data_dim, output_dim):
         
 
         """Full connected network
@@ -88,10 +86,7 @@ class GaussianProcessLayer(AbstractVariationalGP):
         self.grid_bounds = grid_bounds
         
 
-    def forward(
-        self,
-        x
-        ):
+    def forward(self,x):
 
 
         """Forward pass"""
@@ -118,13 +113,13 @@ class DKLModel(gpytorch.Module):
         num_mixtures):
 
 
-        """ISV-DKL model
+        """SV-DKL model
 
 
         Args:
             nnet_layer(pytorch neural net): feature extractor
             num_dim(int): data input dimension
-            grid_bound(tuple): bound of the grid, entries,represent min/max values of each dimensionn
+            grid_bound(tuple): bound of the grid, entries,represent min/max values of each dimension
                                and represent number of inducing points
             grid_size(int): size of grid in each dimension
             num_mixture(int): number of mixture components
@@ -155,6 +150,5 @@ class DKLModel(gpytorch.Module):
             )
             
         res = self.gp_layer(features)
-
 
         return res

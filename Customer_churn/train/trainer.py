@@ -17,11 +17,7 @@ class SvDklTrainer:
     
     """Train SV_DKL model"""
 
-    def __init__(
-        self,
-        hyper_params,
-        aml_run
-        ):
+    def __init__(self, hyper_params, aml_run):
         
         
         """initialize SV-DKL model
@@ -60,10 +56,7 @@ class SvDklTrainer:
         self.aml_run = aml_run
 
     
-    def fit(
-        self,
-        data_loader
-        ):
+    def fit(self, data_loader):
 
 
 
@@ -102,8 +95,7 @@ class SvDklTrainer:
                         self.aml_run.log(loss.item()) 
 
     
-    def eval(self,
-            dataloader):
+    def eval(self, dataloader):
 
         """Evaluate SV-DKL model on test dataset
 
@@ -135,5 +127,5 @@ class SvDklTrainer:
         print("Accuracy score: ",round(accuracy,2))
 
         if self.aml_run is not None:
-            self.aml_run.log("AUC score: ",round(auc,2))
-            self.aml_run.log("Accuracy score: ",round(accuracy,2))
+            self.aml_run.log("AUC: ",round(auc,2))
+            self.aml_run.log("Accuracy: ",round(accuracy,2))

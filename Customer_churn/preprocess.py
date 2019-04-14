@@ -36,7 +36,6 @@ def preprocess(input_path):
                         columns=cat_cols,
                         prefix='oh_')   
 
-
     return df 
 
 
@@ -66,6 +65,8 @@ def to_normed_tensors(df,seed=129):
                                                      y, 
                                                      test_size=.33, 
                                                      random_state=seed)
+
+                                                    
     return  (X_train,X_test,y_train,y_test)
 
 
