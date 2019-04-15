@@ -127,5 +127,5 @@ class SvDklTrainer:
         print("Accuracy score: ",round(accuracy,2))
 
         if self.aml_run is not None:
-            self.aml_run.log("AUC: ",round(auc,2))
-            self.aml_run.log("Accuracy: ",round(accuracy,2))
+            self.aml_run.log('auc',round(auc,2))
+            self.aml_run.log('Accuracy',round(accuracy,2))

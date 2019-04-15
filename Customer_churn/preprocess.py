@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import os.path
 from sklearn.preprocessing import StandardScaler
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 
 
 def preprocess(input_path):
@@ -79,11 +79,12 @@ if __name__ == '__main__':
     parser.add_argument('--output_path')
     
 
-    input_path = parser.parse_args().input_path
+    input_path = os.path.join(parser.parse_args().input_path,
+                            "CATelcoCustomerChurnTrainingSample.csv")
     output_path = parser.parse_args().output_path
     
    
-    
+    print("reading from", input_path)
     df = preprocess(input_path)
     X_train,X_test,y_train,y_test = to_normed_tensors(df)
 
