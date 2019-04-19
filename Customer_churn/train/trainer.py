@@ -92,7 +92,7 @@ class SvDklTrainer:
                     print('Train Epoch: %d [%03d/%03d], Loss: %.6f' % (epoch, i + 1, len(data_loader), loss.item()))
                     
                     if self.aml_run is not None:
-                        self.aml_run.log(loss.item()) 
+                        self.aml_run.log("loss",loss.item()) 
 
     
     def eval(self, dataloader):

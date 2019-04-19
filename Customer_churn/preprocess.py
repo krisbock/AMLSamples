@@ -79,21 +79,22 @@ if __name__ == '__main__':
     parser.add_argument('--output_path')
     
 
-    input_path = os.path.join(parser.parse_args().input_path,
-                            "CATelcoCustomerChurnTrainingSample.csv")
+    input_path = os.path.join(parser.parse_args().input_path)
     output_path = parser.parse_args().output_path
     
    
     print("reading from", input_path)
-    df = preprocess(input_path)
+    file_name = os.path.join(input_path, 'CATelcoCustomerChurnTrainingSample.csv')
+    df = preprocess(file_name)
     X_train,X_test,y_train,y_test = to_normed_tensors(df)
 
     os.makedirs(output_path, exist_ok = True)
     print('writing to ', output_path)
      
     tensors_lst =[X_train,X_test,y_train,y_test] 
-    file_names = ['X_train.npy','X_testnpy','y_train.npy','y_train.npy']
+    file_names = ['X_train.npy','X_test.npy','y_train.npy','y_test.npy']
 
     for file_name,tensors in zip(file_names,tensors_lst):
-        print(file_name, tensors.shape)
+        file_name = os.path.join(output_path,file_name)
+        print("saving",file_name, tensors.shape)
         np.save(file_name,tensors)
