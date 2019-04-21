@@ -73,13 +73,6 @@ class GaussianProcessLayer(AbstractVariationalGP):
                                                          variational_distribution=variational_distribution
                                                         )
         super(GaussianProcessLayer,self).__init__(variational_strategy)
-        '''self.covar_module = gpytorch.kernels.ScaleKernel(
-            gpytorch.kernels.RBFKernel(
-                lengthscale_prior=gpytorch.priors.SmoothedBoxPrior(
-                    math.exp(-1), math.exp(1), sigma=0.1, transform=torch.exp
-                )
-            )
-        )'''
         self.covar_module = gpytorch.kernels.SpectralMixtureKernel(num_mixtures=num_mixtures,
                                                                    ard_dum_dims=num_dim)
         self.mean_module = gpytorch.means.ConstantMean()
