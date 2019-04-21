@@ -7,7 +7,7 @@ https://github.com/Azure/MachineLearningSamples-DeepLearningforPredictiveMainten
 
 ## Changes introduced:
 - Training using Azure Machine Learning Service pipeline.
-- Model training done with a probabilistic deep network using deep kernel learning approach (see section below for details).
+- Model training done with a probabilistic deep network using deep kernel learning approach.
 - Hyperparameters tunning using Azure ML's Hyperdrive
 
 ## Prerequisites:
