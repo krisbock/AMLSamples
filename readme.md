@@ -2,7 +2,7 @@
 
 This repository provide samples on how to use Azure Machine learning services python SDK.
 
-In order to get started with Azure Machine learning SDK, please go through [AML official repo](https://github.com/Azure/MachineLearningNotebooks)
+In order to get started with Azure Machine learning SDK, please go through [Azure ML official repo](https://github.com/Azure/MachineLearningNotebooks)
 
 <br>
 
