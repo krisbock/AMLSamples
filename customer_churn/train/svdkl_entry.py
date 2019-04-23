@@ -51,6 +51,10 @@ test_dataloader = DataLoader(TensorDataset(X_test,y_test),
                               shuffle = True)
 # start training
 
+SEED = 123
+torch.manual_seed(SEED)
+torch.backends.cudnn.deterministic = True
+
 run = Run.get_context()
 
 trainer = SvDklTrainer(hyper_params, aml_run=run)

@@ -46,7 +46,7 @@ The resulting model can be viewed as a Gaussian process which uses an additive s
 
 The pipeline is composed as a DAG using Azure ML pipeline[6]. The model is trained on Azure ML Compute[4] on a GPU based cluster and hyperparameters are tuned throught Azure ML hyperdrive[5].
 
-The experiment was set to run for twenty run on a four nodes based GPU cluster. The overall execution last for a duration of 65 minutes.
+The experiment was set to run for twenty run on a four nodes based GPU cluster. The overall execution last for a duration of ~39 minutes.
 
 <img style='margin:40px;width: 40%;' 
 src='https://amlgitsamples.blob.core.windows.net/churn/hyperdrive.PNG'/>
