@@ -2,7 +2,7 @@
 
 This repository provide samples on how to use Azure Machine learning services python SDK.
 
-In order to get started with Azure Machine learning SDK, please go through [AML official repo](https://github.com/Azure/MachineLearningNotebooks)
+In order to get started with Azure Machine learning SDK, please go through [Azure ML official repo](https://github.com/Azure/MachineLearningNotebooks)
 
 <br>
 
@@ -11,7 +11,7 @@ In order to get started with Azure Machine learning SDK, please go through [AML 
 * **[facereco](https://github.com/Azure/AMLSamples/tree/master/facereco)** sample demonstrates how to train an [Azure Machine learning pipeline](https://docs.microsoft.com/en-us/azure/machine-learning/service/concept-ml-pipelines).
 * **[Predictive maintenance](https://github.com/Azure/AMLSamples/tree/master/predictive_maintenance)** real world scenario template previously available under AML Workbench trained on Azure Databricks.
 * **[Deep Predictive maintenance](https://github.com/Azure/AMLSamples/tree/master/deep_predictive_maintenance)** real world scenario template previously available under AML Workbench trained using Pytorch.
-
+* **[Customer churn](https://github.com/Azure/AMLSamples/tree/master/customer_churn)** real world scenario template previously available under AML Workbench trained using deep kernel learning.
 <br>
 
 
