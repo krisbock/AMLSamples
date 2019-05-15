@@ -1,44 +1,34 @@
-#Importing all needed packages
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import collections
 import math
 import os
 import random
-import zipfile
-import argparse
 
 import numpy as np
 #import pandas as pd
 from six.moves import urllib
 from six.moves import xrange  # pylint: disable=redefined-builtin
+
 import tensorflow as tf
-from tensorflow.keras.layers import Dense,Dropout,Conv2D,Conv3D,MaxPool2D,Reshape,Input,Flatten
-from tensorflow.keras import Sequential
-from tensorflow.keras.optimizers import RMSprop,Adam
-from tensorflow.keras.models import Model
+import tensorflow_datasets as tfds
+from tensorflow.keras.layers import (Dense,Dropout,Conv2D,MaxPool2D,
+                                    Reshape,Input,Flatten)
 import horovod.tensorflow as hvd
-#import horovod.tensorflow.keras as hvd
+
 from azureml.core.run import Run
 
 class Parameters:
     def __init__(self):
-        self.pixels = 100
         self.classes = 3
         self.batch_size = 64
         self.epochs = 10
         self.num_batches=20
 
 params = Parameters()
-# Class definitions
-cls = {'Normal':1,'bacteria':2,'virus':3}
 
 
 def model_fn(features,labels,mode):
     
-    print("IN model_fn",features.get_shape())
+    print("I model_fn",features.get_shape())
     
     #Combine it with keras
     model_input = Input(tensor=features)
@@ -94,68 +84,32 @@ def model_fn(features,labels,mode):
     
     return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
-    
-def _batch_normalization(tensor, epsilon=.0001):
-    mean,variance = tf.nn.moments(tensor,axes=[0])
-    return((tensor-mean)/(variance+epsilon))
-
-def _parse_function(proto):
-    # define your tfrecord again. Remember that you saved your image as a string.
-    features = {'image': tf.FixedLenFeature([], tf.string),
-                        "label": tf.FixedLenFeature([], tf.int64)}
-    
-    # Load one example
-    features = tf.parse_single_example(proto, features)
-    
-    # Turn your saved image string into an array
-    features['image'] = tf.decode_raw(features['image'], tf.uint8)
-    
-    features['image'] = tf.cast(features['image'],tf.float32)
-    
-    
-    return features['image'],features['label']
 
 
-def input_fn(filepath, is_eval):
-    print('FILE PATH:',filepath)
+def input_fn(dataset, is_eval):
+    
+    X,y = dataset
+    tf.data.Dataset.from_tensor_slices((X,y))
     batch_size = params.batch_size
-    pixels = params.pixels
     classes = params.classes
     
     with tf.name_scope('input'):
-        dataset = tf.data.TFRecordDataset(filepath)
         dataset = dataset.shard(hvd.size(),  hvd.rank())
-        dataset = dataset.map(_parse_function, num_parallel_calls=hvd.local_size())
         dataset = dataset.shuffle(100* batch_size)
         if is_eval == False:
             dataset = dataset.repeat()
         dataset = dataset.batch(batch_size, drop_remainder=True)
         
-    # Create your tf representation of the iterator
     iterator = dataset.make_one_shot_iterator()
     image,label = iterator.get_next()
-    # Bring your picture back in shape
-    image = tf.reshape(image, [-1,pixels, pixels,1])
-    # Create a one hot array for your labels,1
     label= tf.one_hot(label, classes)
     
-
-    # returns features x and labels y
-    return _batch_normalization(image),label
+    return image,label
 
 def main(unused_argv):
     
     tf.logging.set_verbosity(tf.logging.INFO)
-    
-    # Get input data from directory
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--input_data', type=str, help='training data')
 
-    args = parser.parse_args()
-
-    input_data = os.path.join(args.input_data,'chest_xray')
-    
-    print("the input data is at %s" % input_data)
     
     
     # Horovod: initialize Horovod.
@@ -179,17 +133,17 @@ def main(unused_argv):
     tensors_to_log = {"probabilities": "softmax_tensor"}
     logging_hook = tf.train.LoggingTensorHook(tensors=tensors_to_log, every_n_iter=200)
 
-    # Horovod: BroadcastGlobalVariablesHook broadcasts initial variable states from
-    # rank 0 to all other processes. This is necessary to ensure consistent
-    # initialization of all workers when training is started with random weights or
-    # restored from a checkpoint.
     
     bcast_hook =hvd.BroadcastGlobalVariablesHook(0)
 
+        
+    
+    mnist_train = tfds.load(name="mnist", split=tfds.Split.TRAIN)
+    mnist_test = tfds.load(name="mnist", split=tfds.Split.TEST)
     # Train the model
-    callable_train_input_fn = lambda: input_fn(os.path.join(input_data,'train.tfrecords'), False)
+    callable_train_input_fn = lambda: input_fn(mnist_train, False)
     #evaluate the model
-    callable_eval_input_fn = lambda: input_fn(os.path.join(input_data,'test.tfrecords'), True)
+    callable_eval_input_fn = lambda: input_fn(mnist_test, True)
 
     # Horovod: reduce number of training steps inversely proportional to the number
     # of workers.
