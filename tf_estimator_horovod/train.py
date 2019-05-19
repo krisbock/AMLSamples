@@ -122,18 +122,11 @@ def main(unused_argv):
     bcast_hook =hvd.BroadcastGlobalVariablesHook(0)
 
     (X_train, y_train), (X_test, y_test) = tf.keras.datasets.mnist.load_data()
-<<<<<<< HEAD
-    
-    callable_train_input_fn = lambda: input_fn(X_train, y_train, False)
-    callable_eval_input_fn = lambda: input_fn(X_test, y_test, True)
-    
-=======
 
     callable_train_input_fn = lambda: input_fn(X_train, y_train, False)
     callable_eval_input_fn = lambda: input_fn(X_test, y_test, True)
     
 
->>>>>>> 55d449e8120c2558602c742c82b87bbe13ca443f
     cnn.train(
       input_fn=callable_train_input_fn,
       steps=params['epochs'] // hvd.size(),
