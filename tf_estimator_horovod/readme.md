@@ -1,7 +1,9 @@
 # Distributed training using Horovod and Tensorflow high level API using Azure machine learning service  
 
 
-This sample demonstrates how to perform distributed training using horvod backend on Azure Machine learning using Tensorflow high level API i.e tf.estimator and tf.data
+
+This sample demonstrates how to perform distributed training using horvod backend on Azure Machine learning using Tensorflow high level API i.e tf.estimator and tf.data dataset.
+
 
 
 

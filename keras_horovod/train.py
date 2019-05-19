@@ -41,10 +41,13 @@ def input_fn(X,y, is_eval):
     if is_eval == False:
         dataset = dataset.repeat()
         
+<<<<<<< HEAD
     '''iterator = dataset.make_one_shot_iterator()
     while True:
         image,label = iterator.get_next()
         yield image,label'''
+=======
+>>>>>>> 55d449e8120c2558602c742c82b87bbe13ca443f
     return dataset
 
 def cnn_layers(input):
