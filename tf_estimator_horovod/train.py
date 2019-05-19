@@ -23,8 +23,8 @@ def model_fn(features,labels,mode):
     max_pool = MaxPool2D(pool_size=(2,2))(conv1)
     conv2 = Conv2D(64,(5,5),activation=tf.nn.relu)(max_pool)
     max_pool2 = MaxPool2D(pool_size=(2,2))(conv2)
-    flatten = Flatten(input_shape=(-1, params['width'],
-                                   params['height'], 
+    flatten = Flatten(input_shape=(-1, params['height'],
+                                   params['width'], 
                                    params['channel']))(max_pool2)
     full_connected = Dense(1024)(flatten)
     drop = Dropout(.4)(full_connected)
@@ -74,8 +74,8 @@ def input_fn(X,y, is_eval):
     def preprocess_fn(image, label):
         
         x = tf.reshape(tf.cast(image, tf.float32),(
-                                    params['width'],
-                                    params['height'], 
+                                    params['height'],
+                                    params['width'], 
                                     params['channel'])
                       )
         x = tf.cast(x, tf.float32)/255
@@ -122,19 +122,11 @@ def main(unused_argv):
     bcast_hook =hvd.BroadcastGlobalVariablesHook(0)
 
     (X_train, y_train), (X_test, y_test) = tf.keras.datasets.mnist.load_data()
-    X_train = X_train.reshape(X_train.shape[0],
-                               params['width'],
-                               params['height'], 
-                               params['channel']
-                             )
-    callable_train_input_fn = lambda: input_fn(X_train, y_train, False)
 
-    X_test = X_test.reshape(X_test.shape[0], 
-                            params['width'],
-                            params['height'], 
-                            params['channel']
-                           )
+    
+    callable_train_input_fn = lambda: input_fn(X_train, y_train, False)
     callable_eval_input_fn = lambda: input_fn(X_test, y_test, True)
+
     cnn.train(
       input_fn=callable_train_input_fn,
       steps=params['epochs'] // hvd.size(),
