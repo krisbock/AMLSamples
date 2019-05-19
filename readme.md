@@ -13,8 +13,7 @@ In order to get started with Azure Machine learning SDK, please go through [Azur
 * **[Deep Predictive maintenance](https://github.com/Azure/AMLSamples/tree/master/deep_predictive_maintenance)** real world scenario template previously available under AML Workbench trained using Pytorch.
 * **[Customer churn](https://github.com/Azure/AMLSamples/tree/master/customer_churn)** real world scenario template previously available under AML Workbench trained using deep kernel learning.
 * **[Distributed training using TF high level API](https://github.com/Azure/AMLSamples/tree/master/tf_estimator_horovod)** sample that demonstrates how to perform distributed training using horovod and tf.estimator with tf.data dataset on Azure ML service.
-* **[Distributed training using keras](https://github.com/Azure/AMLSamples/tree/master/keras_horovod)** sample that demonstrates how to perform distributed training using horovod with keras and tf.data dataset on Azure ML service.
-
+* **[Distributed training using Tensorflow Keras](https://github.com/Azure/AMLSamples/tree/master/keras_horovod)** sample that demonstrates how to perform distributed training using horovod with Tensorflow Keras and tf.data dataset on Azure ML service.
 <br>
 
 
