@@ -12,8 +12,8 @@ In order to get started with Azure Machine learning SDK, We highly recommend to 
 * **[Predictive maintenance](https://github.com/Azure/AMLSamples/tree/master/predictive_maintenance)** scenario previously available under AML Workbench trained on Azure Databricks.
 * **[Deep Predictive maintenance](https://github.com/Azure/AMLSamples/tree/master/deep_predictive_maintenance)** scenario previously available under AML Workbench trained using Pytorch.
 * **[Customer churn](https://github.com/Azure/AMLSamples/tree/master/customer_churn)** scenario previously available under AML Workbench trained using deep kernel learning.
-* **[Distributed training using TF high level API](https://github.com/Azure/AMLSamples/tree/master/tf_estimator_horovod)** sample that demonstrates how to perform distributed training using horovod and tf.estimator with tf.data dataset on Azure ML service.
-* **[Distributed training using Tensorflow Keras](https://github.com/Azure/AMLSamples/tree/master/keras_horovod)** sample that demonstrates how to perform distributed training using horovod with Tensorflow Keras and tf.data dataset on Azure ML service.
+* **[Distributed training using TF high level API](https://github.com/Azure/AMLSamples/tree/master/tf_estimator_horovod)** sample demonstrates how to perform distributed training using horovod and tf.estimator with tf.data dataset on Azure ML service.
+* **[Distributed training using tf.keras](https://github.com/Azure/AMLSamples/tree/master/keras_horovod)** sample demonstrates how to perform distributed training using horovod with Tensorflow Keras and tf.data dataset on Azure ML service.
 * **[Sentiment Analysis](https://github.com/Azure/AMLSamples/tree/master/sentiment_analysis)** sample previously available under AML Workbench now trained on Azure Machine learning service using Fast AI NLP pipepline.
 
 <br>
