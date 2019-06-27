@@ -24,11 +24,5 @@ Before running this notebook, make sure you have gone through the steps listed b
 
 - You have a development environment configured https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-configure-environment
 
-- You have an Azure Databricks cluster deployed with the following configuration:   
-    * Databricks Runtime version: (latest stable release)(Scala 2.11)
-    * Python version: 3
-    * Driver/Worker type: Standard_DS13_v2
-    * Python libraries installed:
-        
-         ```ipython==2.2.0, pyOpenSSL==16.0.0, psutil, azureml-sdk[databricks], cryptography==1.5```
+- You have an Azure Databricks cluster deployed with AzureML SDK installed  https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-configure-environment#azure-databricks
 
