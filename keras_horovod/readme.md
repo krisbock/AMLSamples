@@ -1,7 +1,7 @@
-# Distributed training using Horovod and Tensorflow high level API using Azure machine learning service  
+# Distributed training with Horovod and Tensorflow Keras using Azure machine learning service  
 
 
-This sample demonstrates how to perform distributed training using horvod backend on Azure Machine learning using keras.
+This sample demonstrates how to perform distributed training using horvod backend on Azure Machine learning and Tensorflow Keras.
 
 
 
