@@ -1,9 +1,9 @@
 # Customer churn prediction
 
 
-This sample is an update of the predictive maintenance sample previously made available as part of the real world scenario under Azure Machine learning workbench.
+This sample is an update of the customer churn sample previously made available as part of the real world scenario under Azure Machine learning workbench.
 
-https://github.com/Azure/MachineLearningSamples-DeepLearningforPredictiveMaintenance
+https://github.com/Azure-Samples/MachineLearningSamples-ChurnPrediction
 
 ## Changes introduced:
 - Training using Azure Machine Learning Service pipeline.
